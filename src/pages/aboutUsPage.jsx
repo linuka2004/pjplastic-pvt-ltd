@@ -332,21 +332,21 @@ export default function AboutUsPage() {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
             <Leader
               image="/md.jpeg"
-              name="Mr. Prabath Jayasinghe"
-              role="Chairman"
+              name="Mrs. Inoka Priyadarshani"
+              role="Director / Managing Director"
               text="Overseeing operations and ensuring consistent product quality."
+            />
+            <Leader
+              image="/director.jpg"
+              name="Mr. Linuka Jayasinghe"
+              role="Director"
+              text="Driving strategy and long-term partnerships."
             />            
             <Leader
               image="/ceo.jpeg"
               name="Mr. Hiruka Jayasinghe"
               role="Chief Executive Officer (CEO)"
               text="Leading PJ Plastic with innovation, growth, and sustainability."
-            />
-            <Leader
-              image="/director.jpg"
-              name="Mrs. Inoka Priyadarshani"
-              role="Director"
-              text="Driving strategy and long-term partnerships."
             />
           </div>
         </div>
