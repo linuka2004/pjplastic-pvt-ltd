@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import Loader from "../../components/loader";
 import toast from "react-hot-toast";
@@ -29,6 +30,8 @@ export default function AdminMaterialStockDetailsPage() {
 
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
   const token = useMemo(() => localStorage.getItem("token"), []);
 
@@ -211,7 +214,8 @@ export default function AdminMaterialStockDetailsPage() {
                 <thead>
                   <tr className="bg-secondary text-primary text-left text-sm uppercase tracking-wider">
                     <th className="py-3 px-4 rounded-l-xl">Date</th>
-                    <th className="py-3 px-4 rounded-r-xl">Quantity (Kg)</th>
+                    <th className="py-3 px-4">Quantity (Kg)</th>
+                    <th className="py-3 px-4 rounded-r-xl text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-accent/30">
@@ -228,6 +232,16 @@ export default function AdminMaterialStockDetailsPage() {
                           {r.date ? r.date.slice(0, 10) : ""}
                         </td>
                         <td className="py-3 px-4">{r.quantityKg}</td>
+                        <td className="py-3 px-4 text-center">
+                          <button
+                            onClick={() => setConfirmDelete(r._id)}
+                            disabled={deleting === r._id}
+                            className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all disabled:opacity-60 inline-flex items-center gap-1"
+                            title="Delete record"
+                          >
+                            <MdDelete size={18} />
+                          </button>
+                        </td>
                       </tr>
                     ))
                   )}
@@ -238,6 +252,47 @@ export default function AdminMaterialStockDetailsPage() {
             <Loader />
           )}
         </div>
+
+        {/* Delete Confirmation Modal */}
+        {confirmDelete && (
+          <div className="w-screen fixed inset-0 z-[9999] bg-black/40 flex justify-center items-center">
+            <div className="w-[90%] max-w-[500px] bg-white rounded-2xl p-6 shadow-2xl">
+              <h2 className="text-xl font-semibold text-secondary mb-4">Delete Stock Record?</h2>
+              <p className="text-secondary/80 mb-6">
+                Are you sure you want to delete this stock record? This action cannot be undone.
+              </p>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setConfirmDelete(null)}
+                  className="flex-1 px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={async () => {
+                    setDeleting(confirmDelete);
+                    try {
+                      await axios.delete(
+                        import.meta.env.VITE_BACKEND_URL + `/materials/${materialId}/stock-records/${confirmDelete}`,
+                        { headers: { Authorization: `Bearer ${token}` } }
+                      );
+                      toast.success("Stock record deleted successfully");
+                      setConfirmDelete(null);
+                      fetchRecords();
+                    } catch (err) {
+                      toast.error(err?.response?.data?.message || "Failed to delete record");
+                      setDeleting(null);
+                    }
+                  }}
+                  disabled={deleting === confirmDelete}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-60"
+                >
+                  {deleting === confirmDelete ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
