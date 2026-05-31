@@ -36,7 +36,7 @@ export default function AdminMaterialStockDetailsPage() {
     if (materialFromState?.name) return;
 
     try {
-      const response = await axios.get(import.meta.env.VITE_BACKEND_URL + "/materials/", {
+      const response = await axios.get(import.meta.env.VITE_BACKEND_URL + "/materials", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const material = response.data.find((m) => m._id === materialId);

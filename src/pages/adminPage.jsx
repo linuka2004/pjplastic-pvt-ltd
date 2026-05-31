@@ -13,6 +13,7 @@ import AdminReviewsPage from "./admin/adminReviewsPage";
 import AdminAddUserPage from "./admin/adminAddUserPage";
 import AdminStockPage from "./admin/adminStockPage";
 import AdminMaterialStockDetailsPage from "./admin/adminMaterialStockDetailsPage";
+import AdminAddMaterialPage from "./admin/adminAddMaterialPage";
 
 export default function AdminPage() {
     
@@ -77,7 +78,7 @@ export default function AdminPage() {
                         </Link>
                         <Link
                             to="/admin/stock"
-                            className={`px-3 py-2 rounded-full border border-white/30 flex items-center gap-2 ${location.pathname.startsWith("/admin/stock") ? "bg-white text-accent" : "text-white"}`}
+                            className={`px-3 py-2 rounded-full border border-white/30 flex items-center gap-2 ${location.pathname.startsWith("/admin/stock") || location.pathname.startsWith("/admin/add-material") ? "bg-white text-accent" : "text-white"}`}
                         >
                             <FaStore />
                             <span>Stock</span>
@@ -113,6 +114,7 @@ export default function AdminPage() {
                     <Route path="/add-user" element={<AdminAddUserPage />} />
                     <Route path="/reviews"element={<AdminReviewsPage />} />            
                     <Route path="/stock" element={<AdminStockPage />} />
+                    <Route path="/add-material" element={<AdminAddMaterialPage />} />
                     <Route path="/stock/:materialId" element={<AdminMaterialStockDetailsPage />} />
                 </Routes>
             </div>

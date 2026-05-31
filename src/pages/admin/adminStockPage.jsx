@@ -1,6 +1,7 @@
+import { BiPlus } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../components/loader";
 import toast from "react-hot-toast";
 
@@ -18,7 +19,7 @@ export default function AdminStockPage() {
     }
 
     axios
-      .get(import.meta.env.VITE_BACKEND_URL + "/materials/", {
+      .get(import.meta.env.VITE_BACKEND_URL + "/materials", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -69,6 +70,14 @@ export default function AdminStockPage() {
           </div>
         )}
       </div>
+
+      {/* Floating Add Button */}
+      <Link
+        to="/admin/add-material"
+        className="fixed right-8 bottom-8 w-[60px] h-[60px] flex justify-center items-center rounded-full bg-secondary hover:bg-gold text-primary shadow-2xl text-4xl transition-all"
+      >
+        <BiPlus />
+      </Link>
     </div>
   );
 }
